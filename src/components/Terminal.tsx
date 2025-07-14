@@ -72,29 +72,6 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
 └─────────────┴───────────────────────────────────────────────────────────────┘
 
 Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
-      "NAVI COPLAND OS v2.025 - AVAILABLE SYSTEM COMMANDS",
-      "",
-      "COMMAND      ACTION",
-      "─────────────────────────────────────────────────────────────────────",
-      "💾 memory    Access neural memory bank system",
-      "🌐 network   Launch network scanner and node analyzer", 
-      "🖥️  system    View real-time system monitor",
-      "🎧 audio     Open audio console and waveform analyzer",
-      "🎨 theme     Open color theme configuration panel",
-      "📊 status    Display comprehensive system status",
-      "⏰ time      Show current system time and date",
-      "🕐 uptime    Display system uptime statistics", 
-      "👤 whoami    Reveal current user authentication details",
-      "💬 echo      Echo input text back to terminal",
-      "🕳️  matrix    Enter the matrix simulation",
-      "❓ reality   Question the nature of reality",
-      "🧹 clear     Clear terminal screen buffer",
-      "👁️  who       Mysterious identity query",
-      "🔌 connect   Establish connection to the Wired",
-      "🔮 lain      Special user authentication protocol",
-      "",
-      "Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.",
-    ],
     clear: () => {
       setHistory([]);
       return [];
