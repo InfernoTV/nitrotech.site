@@ -58,7 +58,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           </div>
           <h1>COPLAND OPERATING SYSTEM</h1>
           <p className="version">Version 2.025 - Neural Interface Protocol</p>
-          <div className="glitch-line">SYSTEM_STATUS: {glitchText}</div>
+          <div className="glitch-line">SYSTEM_STATUS: J946@5488AA97464</div>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">

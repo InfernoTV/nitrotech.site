@@ -152,7 +152,16 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--background-color);
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      var(--background-color) 0px,
+      var(--background-color) 2px,
+      rgba(var(--primary-rgb), 0.05) 2px,
+      rgba(var(--primary-rgb), 0.05) 4px
+    );
+  background-size: 100% 4px;
+  animation: stripe-scroll 2s linear infinite;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -564,7 +573,16 @@ body {
 
 /* Terminal */
 .terminal {
-  background: rgba(var(--primary-rgb), 0.05);
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(var(--primary-rgb), 0.05) 0px,
+      rgba(var(--primary-rgb), 0.05) 2px,
+      rgba(var(--primary-rgb), 0.02) 2px,
+      rgba(var(--primary-rgb), 0.02) 4px
+    );
+  background-size: 100% 4px;
+  animation: stripe-scroll 3s linear infinite;
   border: 1px solid var(--primary-color);
   border-radius: 4px;
   height: 100%;
@@ -617,6 +635,7 @@ body {
   margin-bottom: 1rem;
   white-space: pre-wrap;
   text-shadow: 0 0 5px var(--primary-color);
+  line-height: 1.4;
 }
 
 .terminal-line {
@@ -1542,6 +1561,11 @@ body {
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
+}
+
+@keyframes stripe-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 4px; }
 }
 
 /* Responsive Design */
