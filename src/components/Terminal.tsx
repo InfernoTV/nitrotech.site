@@ -105,7 +105,7 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
     },
     status: () => [
       "SYSTEM STATUS:",
-      `  CPU: ${Math.floor(Math.random() * 100)}%`,
+      \`  CPU: ${Math.floor(Math.random() * 100)}%`,
       `  MEMORY: ${Math.floor(Math.random() * 100)}%`,
       `  NETWORK: CONNECTED`,
       `  WIRED STATUS: ACTIVE`,
@@ -246,3 +246,6 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
     </>
   );
 };
+    ]
+  }
+}
