@@ -44,34 +44,40 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
 
   const commands = {
     help: () => [
-      `
-╭─────────────────────────────────────────────────────────────────────────────╮
-│                           NAVI COPLAND OS v2.025                           │
-│                         AVAILABLE SYSTEM COMMANDS                          │
-╰─────────────────────────────────────────────────────────────────────────────╯
-
-┌─────────────┬───────────────────────────────────────────────────────────────┐
-│   COMMAND   │                           ACTION                              │
-├─────────────┼───────────────────────────────────────────────────────────────┤
-│ 💾 memory   │ Access neural memory bank system                              │
-│ 🌐 network  │ Launch network scanner and node analyzer                      │
-│ 🖥️  system   │ View real-time system monitor                                 │
-│ 🎧 audio    │ Open audio console and waveform analyzer                      │
-│ 🎨 theme    │ Open color theme configuration panel                          │
-│ 📊 status   │ Display comprehensive system status                           │
-│ ⏰ time     │ Show current system time and date                             │
-│ 🕐 uptime   │ Display system uptime statistics                              │
-│ 👤 whoami   │ Reveal current user authentication details                    │
-│ 💬 echo     │ Echo input text back to terminal                              │
-│ 🕳️  matrix   │ Enter the matrix simulation                                   │
-│ ❓ reality  │ Question the nature of reality                                │
-│ 🧹 clear    │ Clear terminal screen buffer                                  │
-│ 👁️  who      │ Mysterious identity query                                     │
-│ 🔌 connect  │ Establish connection to the Wired                             │
-│ 🔮 lain     │ Special user authentication protocol                          │
-└─────────────┴───────────────────────────────────────────────────────────────┘
-
-Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.`
+      `<div class="help-container">
+        <div class="help-header">
+          <h2>NAVI COPLAND OS v2.025 - Available System Commands</h2>
+        </div>
+        <table class="help-table">
+          <thead>
+            <tr>
+              <th>Command/Example Usage</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="command">💾 memory</span></td><td>Access neural memory bank system</td></tr>
+            <tr><td><span class="command">🌐 network</span></td><td>Launch network scanner and node analyzer</td></tr>
+            <tr><td><span class="command">🖥️ system</span></td><td>View real-time system monitor</td></tr>
+            <tr><td><span class="command">🎧 audio</span></td><td>Open audio console and waveform analyzer</td></tr>
+            <tr><td><span class="command">🎨 theme</span></td><td>Open color theme configuration panel</td></tr>
+            <tr><td><span class="command">📊 status</span></td><td>Display comprehensive system status</td></tr>
+            <tr><td><span class="command">⏰ time</span></td><td>Show current system time and date</td></tr>
+            <tr><td><span class="command">🕐 uptime</span></td><td>Display system uptime statistics</td></tr>
+            <tr><td><span class="command">👤 whoami</span></td><td>Reveal current user authentication details</td></tr>
+            <tr><td><span class="command">💬 echo [text]</span></td><td>Echo input text back to terminal</td></tr>
+            <tr><td><span class="command">🕳️ matrix</span></td><td>Enter the matrix simulation</td></tr>
+            <tr><td><span class="command">❓ reality</span></td><td>Question the nature of reality</td></tr>
+            <tr><td><span class="command">🧹 clear</span></td><td>Clear terminal screen buffer</td></tr>
+            <tr><td><span class="command">👁️ who</span></td><td>Mysterious identity query</td></tr>
+            <tr><td><span class="command">🔌 connect</span></td><td>Establish connection to the Wired</td></tr>
+            <tr><td><span class="command">🔮 lain</span></td><td>Special user authentication protocol</td></tr>
+          </tbody>
+        </table>
+        <div class="help-footer">
+          <p>Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.</p>
+        </div>
+      </div>`
     ],
     clear: () => {
       setHistory([]);
@@ -196,8 +202,7 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.`
           <div className="terminal-output">
             <pre className="welcome-text">{welcomeText}</pre>
             {history.map((line, index) => (
-              <div key={index} className="terminal-line">
-                {line}
+              <div key={index} className="terminal-line" dangerouslySetInnerHTML={{ __html: line }}>
               </div>
             ))}
           </div>

@@ -1669,3 +1669,82 @@ input:focus,
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(var(--primary-rgb), 0.5);
 }
+/* Help Table Styles */
+.help-container {
+  margin: 1rem 0;
+  font-family: 'Source Code Pro', monospace;
+}
+
+.help-header {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.help-header h2 {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  margin: 0;
+  text-shadow: 0 0 10px var(--primary-color);
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.help-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(var(--primary-rgb), 0.05);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.1);
+}
+
+.help-table thead {
+  background: rgba(var(--primary-rgb), 0.15);
+}
+
+.help-table th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.3);
+  text-shadow: 0 0 5px var(--primary-color);
+}
+
+.help-table td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.1);
+  color: rgba(var(--primary-rgb), 0.9);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.help-table tbody tr:hover {
+  background: rgba(var(--primary-rgb), 0.08);
+}
+
+.help-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.help-table .command {
+  color: var(--secondary-color);
+  font-weight: 500;
+  text-shadow: 0 0 3px var(--secondary-color);
+}
+
+.help-footer {
+  margin-top: 1rem;
+  text-align: center;
+  color: rgba(var(--primary-rgb), 0.7);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.help-footer p {
+  margin: 0;
+  padding: 0.5rem;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.2);
+}
