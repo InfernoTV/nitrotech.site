@@ -71,7 +71,8 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
 │ 🔮 lain     │ Special user authentication protocol                          │
 └─────────────┴───────────────────────────────────────────────────────────────┘
 
-Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
+Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.`
+    ],
     clear: () => {
       setHistory([]);
       return [];
@@ -82,7 +83,7 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
     },
     status: () => [
       "SYSTEM STATUS:",
-      \`  CPU: ${Math.floor(Math.random() * 100)}%`,
+      `  CPU: ${Math.floor(Math.random() * 100)}%`,
       `  MEMORY: ${Math.floor(Math.random() * 100)}%`,
       `  NETWORK: CONNECTED`,
       `  WIRED STATUS: ACTIVE`,
@@ -151,6 +152,7 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
   const handleEcho = (args: string[]) => {
     return args.length > 0 ? [args.join(' ')] : [''];
   };
+
   const handleCommand = (cmd: string) => {
     const parts = cmd.trim().split(' ');
     const command = parts[0].toLowerCase();
@@ -181,41 +183,41 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
   return (
     <>
       <div className="terminal" onClick={handleTerminalClick}>
-      <div className="terminal-header">
-        <div className="terminal-title">TERMINAL_001.EXE</div>
-        <div className="terminal-controls">
-          <span className="control minimize">_</span>
-          <span className="control maximize">□</span>
-          <span className="control close">×</span>
+        <div className="terminal-header">
+          <div className="terminal-title">TERMINAL_001.EXE</div>
+          <div className="terminal-controls">
+            <span className="control minimize">_</span>
+            <span className="control maximize">□</span>
+            <span className="control close">×</span>
+          </div>
         </div>
-      </div>
       
-      <div className="terminal-content">
-        <div className="terminal-output">
-          <pre className="welcome-text">{welcomeText}</pre>
-          {history.map((line, index) => (
-            <div key={index} className="terminal-line">
-              {line}
-            </div>
-          ))}
-        </div>
+        <div className="terminal-content">
+          <div className="terminal-output">
+            <pre className="welcome-text">{welcomeText}</pre>
+            {history.map((line, index) => (
+              <div key={index} className="terminal-line">
+                {line}
+              </div>
+            ))}
+          </div>
         
-        <div className="terminal-input-line">
-          <span className="prompt">navi@copland:~$ </span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="terminal-input"
-            autoComplete="off"
-            spellCheck="false"
-          />
-          <span className={`cursor ${showCursor ? 'visible' : ''}`}>█</span>
+          <div className="terminal-input-line">
+            <span className="prompt">navi@copland:~$ </span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={currentInput}
+              onChange={(e) => setCurrentInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="terminal-input"
+              autoComplete="off"
+              spellCheck="false"
+            />
+            <span className={`cursor ${showCursor ? 'visible' : ''}`}>█</span>
+          </div>
         </div>
       </div>
-    </div>
       
       {showColorPicker && (
         <ColorPicker onClose={() => setShowColorPicker(false)} />
@@ -223,6 +225,3 @@ Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.
     </>
   );
 };
-    ]
-  }
-}
