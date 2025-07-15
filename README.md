@@ -36,7 +36,7 @@ Some commands trigger sound, others reveal hidden parts of the system. You never
 
 ## 🌐 Live Demo
 
-> Coming soon...  (Not deployed yet)
+> https://nitrotech.site
 
 > *(Or run it locally — instructions below *soon*.)*
 
