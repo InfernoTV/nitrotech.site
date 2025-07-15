@@ -82,7 +82,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     <div 
       className="login-screen"
       style={{
-        backgroundImage: `url('/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png')`,
+        backgroundImage: `url('/new logo.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -115,7 +115,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         <div className="login-header">
           <div className="logo-container">
             <img 
-              src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
+              src="/new logo.png" 
               alt="Copland OS Enterprise" 
               className="login-logo"
               style={{
