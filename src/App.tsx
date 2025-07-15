@@ -30,15 +30,33 @@ interface WindowState {
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSpecialLogin, setIsSpecialLogin] = useState(false);
+  const [autoLoginCredentials, setAutoLoginCredentials] = useState<{username: string, password: string} | null>(null);
   const [windows, setWindows] = useState<WindowState[]>([]);
   const [nextZIndex, setNextZIndex] = useState(1000);
   const [isBooting, setIsBooting] = useState(false);
   const [glitchIntensity, setGlitchIntensity] = useState(0);
   const { playSound } = useAudio();
   const { setCursorType } = useCursor();
-  const { theme } = useTheme();
+  const { theme, addThemeChangeListener, removeThemeChangeListener } = useTheme();
 
+  // Auto-login when theme changes
+  useEffect(() => {
+    const handleThemeChange = (newTheme: Theme) => {
+      if (!isLoggedIn && autoLoginCredentials) {
+        // Small delay to show the theme change effect
+        setTimeout(() => {
+          handleLogin(autoLoginCredentials.username, autoLoginCredentials.password);
+        }, 500);
+      }
+    };
+
+    addThemeChangeListener(handleThemeChange);
+    return () => removeThemeChangeListener(handleThemeChange);
+  }, [isLoggedIn, autoLoginCredentials, addThemeChangeListener, removeThemeChangeListener]);
   const handleLogin = (username: string, password: string) => {
+    // Store credentials for potential auto-login
+    setAutoLoginCredentials({ username, password });
+    
     setIsBooting(true);
     const isSpecial = username.toLowerCase() === 'lain' && password === 'root';
     setIsSpecialLogin(isSpecial);

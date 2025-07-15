@@ -46,7 +46,7 @@ export const Taskbar: React.FC<TaskbarProps> = ({
         <div className="taskbar-left">
           <button className="start-button" onClick={handleStartClick}>
             <img 
-              src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
+              src="/new logo.png" 
               alt="Copland OS" 
               className="start-logo"
             />
@@ -57,7 +57,7 @@ export const Taskbar: React.FC<TaskbarProps> = ({
             <div className="start-menu">
               <div className="start-menu-header">
                 <img 
-                  src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
+                  src="/new logo.png" 
                   alt="Copland OS" 
                   className="menu-logo"
                 />

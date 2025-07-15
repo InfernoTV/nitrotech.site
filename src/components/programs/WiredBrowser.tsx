@@ -192,7 +192,7 @@ export const WiredBrowser: React.FC<WiredBrowserProps> = ({ onSwitchProgram }) =
         <div className="search-container">
           <div className="search-logo">
             <img 
-              src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
+              src="/new logo.png" 
               alt="Wired Search" 
               className="wired-logo"
             />
