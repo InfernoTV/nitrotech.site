@@ -582,6 +582,17 @@ body {
   min-width: 400px;
   min-height: 300px;
   user-select: none;
+  transition: none;
+}
+
+.window.dragging {
+  transition: none;
+  pointer-events: auto;
+}
+
+.window.resizing {
+  transition: none;
+  pointer-events: auto;
 }
 
 .window-header {
@@ -591,19 +602,23 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: move;
   user-select: none;
   border-radius: 8px 8px 0 0;
+  position: relative;
+  z-index: 1;
 }
 
 .window-title {
   font-weight: 600;
   font-size: 0.9rem;
+  pointer-events: none;
 }
 
 .window-controls {
   display: flex;
   gap: 0.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .window-control {
@@ -618,6 +633,7 @@ body {
   cursor: pointer;
   transition: all 0.2s;
   color: var(--background-color);
+  pointer-events: auto;
 }
 
 .window-control:hover {
@@ -632,6 +648,7 @@ body {
   height: calc(100% - 40px);
   padding: 1rem;
   overflow: auto;
+  pointer-events: auto;
 }
 
 .window-resize-handle {
@@ -643,6 +660,8 @@ body {
   cursor: nw-resize;
   background: linear-gradient(-45deg, transparent 30%, var(--primary-color) 30%, var(--primary-color) 40%, transparent 40%, transparent 60%, var(--primary-color) 60%, var(--primary-color) 70%, transparent 70%);
   opacity: 0.5;
+  z-index: 3;
+  pointer-events: auto;
 }
 
 .window-resize-handle:hover {
