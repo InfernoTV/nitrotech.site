@@ -106,6 +106,11 @@ function App() {
     ));
   }, []);
 
+  const updateWindowSize = useCallback((windowId: string, size: { width: number; height: number }) => {
+    setWindows(prev => prev.map(w => 
+      w.id === windowId ? { ...w, size } : w
+    ));
+  }, []);
   const triggerGlitch = useCallback(() => {
     setGlitchIntensity(0.8);
     setTimeout(() => setGlitchIntensity(0), 500);
@@ -233,6 +238,7 @@ function App() {
               onMinimize={() => minimizeWindow(window.id)}
               onFocus={() => focusWindow(window.id)}
               onMove={(position) => updateWindowPosition(window.id, position)}
+              onResize={(size) => updateWindowSize(window.id, size)}
             >
               {(() => {
                 switch (window.program) {

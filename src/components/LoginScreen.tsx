@@ -46,6 +46,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       
       <div className="login-container">
         <div className="login-header">
+          <img 
+            src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
+            alt="Copland OS Enterprise" 
+            className="login-logo"
+          />
           <div className="system-logo">
 {`
 ███╗   ██╗ █████╗ ██╗   ██╗██╗
@@ -57,7 +62,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 `}
           </div>
           <h1>COPLAND OPERATING SYSTEM</h1>
-          <p className="version">Version 2.025 - Neural Interface Protocol</p>
+          <p className="version">Produced By Inferno*</p>
           <div className="glitch-line">SYSTEM_STATUS: J946@5488AA97464</div>
         </div>
 

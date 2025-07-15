@@ -185,6 +185,13 @@ body {
   margin-bottom: 2rem;
 }
 
+.login-logo {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 20px var(--secondary-color));
+}
+
 .system-logo {
   font-size: 0.4rem;
   line-height: 1;
@@ -572,6 +579,7 @@ body {
   backdrop-filter: blur(10px);
   min-width: 400px;
   min-height: 300px;
+  user-select: none;
 }
 
 .window-header {
@@ -624,6 +632,20 @@ body {
   overflow: auto;
 }
 
+.window-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nw-resize;
+  background: linear-gradient(-45deg, transparent 30%, var(--primary-color) 30%, var(--primary-color) 40%, transparent 40%, transparent 60%, var(--primary-color) 60%, var(--primary-color) 70%, transparent 70%);
+  opacity: 0.5;
+}
+
+.window-resize-handle:hover {
+  opacity: 1;
+}
 /* Taskbar */
 .taskbar {
   height: 40px;
@@ -678,7 +700,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
   backdrop-filter: blur(10px);
-  z-index: 1001;
+  z-index: 10000;
 }
 
 .start-menu-header {
@@ -1041,8 +1063,7 @@ body {
   50% { width: 100%; }
 }
 
-/* Terminal */
-.terminal {
+.terminal-content {
   background: 
     linear-gradient(
       0deg,
@@ -1052,40 +1073,7 @@ body {
     );
   background-size: 100% 20px;
   animation: vertical-scroll 3s linear infinite;
-  border: 1px solid var(--primary-color);
-  border-radius: 4px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.3);
-}
-
-.terminal-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: var(--background-color);
-  padding: 0.5rem 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-}
-
-.terminal-controls {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.control {
-  cursor: pointer;
-  padding: 0 0.3rem;
-  border-radius: 2px;
-}
-
-.control:hover {
-  background: rgba(var(--primary-rgb), 0.2);
-}
-
-.terminal-content {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;

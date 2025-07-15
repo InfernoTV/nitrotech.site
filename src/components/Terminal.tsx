@@ -193,17 +193,7 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
 
   return (
     <>
-      <div className="terminal" onClick={handleTerminalClick}>
-        <div className="terminal-header">
-          <div className="terminal-title">TERMINAL_001.EXE</div>
-          <div className="terminal-controls">
-            <span className="control minimize">_</span>
-            <span className="control maximize">□</span>
-            <span className="control close">×</span>
-          </div>
-        </div>
-      
-        <div className="terminal-content">
+      <div className="terminal-content" onClick={handleTerminalClick}>
           <div className="terminal-output">
             <pre className="welcome-text">{welcomeText}</pre>
             {history.map((line, index) => (
@@ -225,7 +215,6 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
             />
             <span className={`cursor ${showCursor ? 'visible' : ''}`}>█</span>
           </div>
-        </div>
       </div>
       
       {showColorPicker && (
