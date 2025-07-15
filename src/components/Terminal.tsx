@@ -221,7 +221,6 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
               className="terminal-input"
-        <div className="terminal-title">Terminal</div>
               spellCheck="false"
             />
             <span className={`cursor ${showCursor ? 'visible' : ''}`}>█</span>
