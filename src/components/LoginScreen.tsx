@@ -86,7 +86,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        filter: `hue-rotate(${hueRotation}deg) brightness(0.3) contrast(1.2)`,
+        filter: `hue-rotate(${hueRotation}deg) brightness(0.6) contrast(1.1)`,
         position: 'relative'
       }}
     >
@@ -101,9 +101,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           height: '100%',
           background: `linear-gradient(
             135deg,
-            rgba(0, 0, 0, 0.8) 0%,
-            rgba(var(--primary-rgb), 0.1) 50%,
-            rgba(0, 0, 0, 0.8) 100%
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(var(--primary-rgb), 0.2) 50%,
+            rgba(0, 0, 0, 0.4) 100%
           )`,
           zIndex: 1
         }}
