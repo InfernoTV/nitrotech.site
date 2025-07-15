@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { LoginScreen } from './components/LoginScreen';
 import { Terminal } from './components/Terminal';
+import { WiredBrowser } from './components/programs/WiredBrowser';
 import { MemoryBank } from './components/programs/MemoryBank';
 import { NetworkScanner } from './components/programs/NetworkScanner';
 import { SystemMonitor } from './components/programs/SystemMonitor';
 import { AudioConsole } from './components/programs/AudioConsole';
+import { Taskbar } from './components/Taskbar';
+import { WindowManager } from './components/WindowManager';
 import { CRTEffects } from './components/effects/CRTEffects';
 import { MouseTrail } from './components/effects/MouseTrail';
 import { GlitchOverlay } from './components/effects/GlitchOverlay';
@@ -13,12 +16,22 @@ import { useAudio } from './hooks/useAudio';
 import { useCursor } from './hooks/useCursor';
 import { useTheme } from './hooks/useTheme';
 
-type Program = 'terminal' | 'memory' | 'network' | 'system' | 'audio';
+type Program = 'terminal' | 'memory' | 'network' | 'system' | 'audio' | 'wired';
 
+interface WindowState {
+  id: string;
+  program: Program;
+  title: string;
+  isMinimized: boolean;
+  position: { x: number; y: number };
+  size: { width: number; height: number };
+  zIndex: number;
+}
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSpecialLogin, setIsSpecialLogin] = useState(false);
-  const [currentProgram, setCurrentProgram] = useState<Program>('terminal');
+  const [windows, setWindows] = useState<WindowState[]>([]);
+  const [nextZIndex, setNextZIndex] = useState(1000);
   const [isBooting, setIsBooting] = useState(false);
   const [glitchIntensity, setGlitchIntensity] = useState(0);
   const { playSound } = useAudio();
@@ -35,19 +48,63 @@ function App() {
     setTimeout(() => {
       setIsBooting(false);
       setIsLoggedIn(true);
+      // Open terminal by default
+      openProgram('terminal');
     }, 3000);
   };
 
-  const switchProgram = useCallback((program: Program) => {
-    if (program !== currentProgram) {
-      setGlitchIntensity(0.3);
-      playSound('switch');
-      setTimeout(() => {
-        setCurrentProgram(program);
-        setGlitchIntensity(0);
-      }, 200);
-    }
-  }, [currentProgram, playSound]);
+  const openProgram = useCallback((program: Program) => {
+    const programTitles = {
+      terminal: 'Terminal',
+      memory: 'Memory Bank',
+      network: 'Network Scanner',
+      system: 'System Monitor',
+      audio: 'Audio Console',
+      wired: 'Browse the Wired'
+    };
+
+    const newWindow: WindowState = {
+      id: `${program}-${Date.now()}`,
+      program,
+      title: programTitles[program],
+      isMinimized: false,
+      position: { 
+        x: 50 + (windows.length * 30), 
+        y: 50 + (windows.length * 30) 
+      },
+      size: { width: 800, height: 600 },
+      zIndex: nextZIndex
+    };
+
+    setWindows(prev => [...prev, newWindow]);
+    setNextZIndex(prev => prev + 1);
+    playSound('switch');
+  }, [windows.length, nextZIndex, playSound]);
+
+  const closeWindow = useCallback((windowId: string) => {
+    setWindows(prev => prev.filter(w => w.id !== windowId));
+    playSound('error');
+  }, [playSound]);
+
+  const minimizeWindow = useCallback((windowId: string) => {
+    setWindows(prev => prev.map(w => 
+      w.id === windowId ? { ...w, isMinimized: !w.isMinimized } : w
+    ));
+    playSound('key');
+  }, [playSound]);
+
+  const focusWindow = useCallback((windowId: string) => {
+    setWindows(prev => prev.map(w => 
+      w.id === windowId ? { ...w, zIndex: nextZIndex } : w
+    ));
+    setNextZIndex(prev => prev + 1);
+  }, [nextZIndex]);
+
+  const updateWindowPosition = useCallback((windowId: string, position: { x: number; y: number }) => {
+    setWindows(prev => prev.map(w => 
+      w.id === windowId ? { ...w, position } : w
+    ));
+  }, []);
 
   const triggerGlitch = useCallback(() => {
     setGlitchIntensity(0.8);
@@ -60,23 +117,27 @@ function App() {
         switch (e.key) {
           case 'T':
             e.preventDefault();
-            switchProgram('terminal');
+            openProgram('terminal');
             break;
           case 'M':
             e.preventDefault();
-            switchProgram('memory');
+            openProgram('memory');
             break;
           case 'N':
             e.preventDefault();
-            switchProgram('network');
+            openProgram('network');
             break;
           case 'S':
             e.preventDefault();
-            switchProgram('system');
+            openProgram('system');
             break;
           case 'A':
             e.preventDefault();
-            switchProgram('audio');
+            openProgram('audio');
+            break;
+          case 'W':
+            e.preventDefault();
+            openProgram('wired');
             break;
           case 'G':
             e.preventDefault();
@@ -88,20 +149,22 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [switchProgram, triggerGlitch]);
+  }, [openProgram, triggerGlitch]);
 
   const renderProgram = () => {
-    switch (currentProgram) {
+    switch (program) {
       case 'memory':
-        return <MemoryBank onSwitchProgram={switchProgram} />;
+        return <MemoryBank onSwitchProgram={openProgram} />;
       case 'network':
-        return <NetworkScanner onSwitchProgram={switchProgram} />;
+        return <NetworkScanner onSwitchProgram={openProgram} />;
       case 'system':
-        return <SystemMonitor onSwitchProgram={switchProgram} />;
+        return <SystemMonitor onSwitchProgram={openProgram} />;
       case 'audio':
-        return <AudioConsole onSwitchProgram={switchProgram} />;
+        return <AudioConsole onSwitchProgram={openProgram} />;
+      case 'wired':
+        return <WiredBrowser onSwitchProgram={openProgram} />;
       default:
-        return <Terminal onSwitchProgram={switchProgram} />;
+        return <Terminal onSwitchProgram={openProgram} />;
     }
   };
 
@@ -161,23 +224,41 @@ function App() {
       {isSpecialLogin && <ParticleSystem />}
       
       <div className="os-interface">
-        <div className="program-container">
-          {renderProgram()}
+        <div className="desktop">
+          {windows.map(window => (
+            <WindowManager
+              key={window.id}
+              window={window}
+              onClose={() => closeWindow(window.id)}
+              onMinimize={() => minimizeWindow(window.id)}
+              onFocus={() => focusWindow(window.id)}
+              onMove={(position) => updateWindowPosition(window.id, position)}
+            >
+              {(() => {
+                switch (window.program) {
+                  case 'memory':
+                    return <MemoryBank onSwitchProgram={openProgram} />;
+                  case 'network':
+                    return <NetworkScanner onSwitchProgram={openProgram} />;
+                  case 'system':
+                    return <SystemMonitor onSwitchProgram={openProgram} />;
+                  case 'audio':
+                    return <AudioConsole onSwitchProgram={openProgram} />;
+                  case 'wired':
+                    return <WiredBrowser onSwitchProgram={openProgram} />;
+                  default:
+                    return <Terminal onSwitchProgram={openProgram} />;
+                }
+              })()}
+            </WindowManager>
+          ))}
         </div>
         
-        <div className="status-bar" style={{ 
-          background: `rgba(${theme.primaryRgb}, 0.1)`,
-          borderColor: theme.primary 
-        }}>
-          <div className="status-left">
-            <span className="status-item">NAVI COPLAND OS v2.025</span>
-            <span className="status-item">WIRED: CONNECTED</span>
-          </div>
-          <div className="status-right">
-            <span className="status-item">{new Date().toLocaleTimeString()}</span>
-            <span className="status-item">CTRL+SHIFT+[T/M/N/S/A]</span>
-          </div>
-        </div>
+        <Taskbar 
+          onOpenProgram={openProgram}
+          windows={windows}
+          onWindowAction={minimizeWindow}
+        />
       </div>
     </div>
   );

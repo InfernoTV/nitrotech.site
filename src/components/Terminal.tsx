@@ -72,10 +72,11 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
             <tr><td><span class="command">👁️ who</span></td><td>Mysterious identity query</td></tr>
             <tr><td><span class="command">🔌 connect</span></td><td>Establish connection to the Wired</td></tr>
             <tr><td><span class="command">🔮 lain</span></td><td>Special user authentication protocol</td></tr>
+            <tr><td><span class="command">🌐 wired</span></td><td>Browse the Wired - Access the global network</td></tr>
           </tbody>
         </table>
         <div class="help-footer">
-          <p>Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A] for quick navigation.</p>
+          <p>Type any command to execute. Use CTRL+SHIFT+[T/M/N/S/A/W] for quick navigation.</p>
         </div>
       </div>`
     ],
@@ -136,6 +137,10 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
     audio: () => {
       onSwitchProgram('audio');
       return ["Initializing audio console..."];
+    },
+    wired: () => {
+      onSwitchProgram('wired');
+      return ["Connecting to the Wired..."];
     },
     who: () => [
       "You are...",
@@ -216,7 +221,7 @@ export const Terminal: React.FC<TerminalProps> = ({ onSwitchProgram }) => {
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
               className="terminal-input"
-              autoComplete="off"
+        <div className="terminal-title">Terminal</div>
               spellCheck="false"
             />
             <span className={`cursor ${showCursor ? 'visible' : ''}`}>█</span>

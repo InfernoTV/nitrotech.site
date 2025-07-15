@@ -153,15 +153,17 @@ body {
   width: 100vw;
   height: 100vh;
   background: 
-    repeating-linear-gradient(
-      0deg,
-      var(--background-color) 0px,
-      var(--background-color) 2px,
-      rgba(var(--primary-rgb), 0.05) 2px,
-      rgba(var(--primary-rgb), 0.05) 4px
+    linear-gradient(
+      45deg,
+      var(--background-color) 25%,
+      rgba(var(--primary-rgb), 0.1) 25%,
+      rgba(var(--primary-rgb), 0.1) 50%,
+      var(--background-color) 50%,
+      var(--background-color) 75%,
+      rgba(var(--primary-rgb), 0.1) 75%
     );
-  background-size: 100% 4px;
-  animation: stripe-scroll 2s linear infinite;
+  background-size: 40px 40px;
+  animation: diagonal-scroll 4s linear infinite;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -545,44 +547,256 @@ body {
   z-index: 1;
 }
 
-.program-container {
+.desktop {
+  position: relative;
   flex: 1;
-  padding: 1rem;
   overflow: hidden;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(var(--primary-rgb), 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 50%),
+    linear-gradient(45deg, 
+      transparent 40%, 
+      rgba(var(--accent-rgb), 0.05) 50%, 
+      transparent 60%
+    );
+  animation: desktop-ambient 8s ease-in-out infinite;
 }
 
-.status-bar {
-  height: 30px;
+/* Window Management */
+.window {
+  position: absolute;
+  background: rgba(var(--background-color), 0.95);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+  backdrop-filter: blur(10px);
+  min-width: 400px;
+  min-height: 300px;
+}
+
+.window-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--background-color);
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  user-select: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.window-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.window-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.window-control {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 3px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--background-color);
+}
+
+.window-control:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.window-control.close:hover {
+  background: var(--accent-color);
+}
+
+.window-content {
+  height: calc(100% - 40px);
+  padding: 1rem;
+  overflow: auto;
+}
+
+/* Taskbar */
+.taskbar {
+  height: 40px;
   background: rgba(var(--primary-rgb), 0.1);
   border-top: 1px solid var(--primary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  font-size: 0.8rem;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
 }
 
-.status-left, .status-right {
+.taskbar-left {
   display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.start-button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  color: var(--background-color);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.start-button:hover {
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.5);
+}
+
+.start-logo {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+
+.start-menu {
+  position: absolute;
+  bottom: 40px;
+  left: 1rem;
+  width: 300px;
+  background: rgba(var(--background-color), 0.95);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 1001;
+}
+
+.start-menu-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: var(--background-color);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 8px 8px 0 0;
+}
+
+.menu-logo {
+  width: 40px;
+  height: 40px;
+  filter: brightness(0) invert(1);
+}
+
+.menu-title {
+  font-weight: 600;
+}
+
+.menu-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.start-menu-items {
+  padding: 0.5rem;
+}
+
+.start-menu-items button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  padding: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: inherit;
+}
+
+.start-menu-items button:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+}
+
+.menu-separator {
+  height: 1px;
+  background: rgba(var(--primary-rgb), 0.3);
+  margin: 0.5rem 0;
+}
+
+.taskbar-center {
+  display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-.status-item {
+.taskbar-window {
+  background: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  color: var(--primary-color);
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskbar-window:hover {
+  background: rgba(var(--primary-rgb), 0.2);
+}
+
+.taskbar-window.minimized {
+  opacity: 0.6;
+}
+
+.taskbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.system-tray {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
   opacity: 0.7;
+}
+
+.taskbar-clock {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
 }
 
 /* Terminal */
 .terminal {
   background: 
-    repeating-linear-gradient(
+    linear-gradient(
       0deg,
-      rgba(var(--primary-rgb), 0.05) 0px,
-      rgba(var(--primary-rgb), 0.05) 2px,
-      rgba(var(--primary-rgb), 0.02) 2px,
-      rgba(var(--primary-rgb), 0.02) 4px
+      var(--background-color) 0%,
+      rgba(var(--primary-rgb), 0.08) 50%,
+      var(--background-color) 100%
     );
-  background-size: 100% 4px;
-  animation: stripe-scroll 3s linear infinite;
+  background-size: 100% 20px;
+  animation: vertical-scroll 3s linear infinite;
   border: 1px solid var(--primary-color);
   border-radius: 4px;
   height: 100%;
@@ -1565,7 +1779,17 @@ body {
 
 @keyframes stripe-scroll {
   0% { background-position: 0 0; }
-  100% { background-position: 0 4px; }
+  100% { background-position: 0 20px; }
+}
+
+@keyframes diagonal-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+@keyframes vertical-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 20px; }
 }
 
 /* Responsive Design */
