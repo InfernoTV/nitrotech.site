@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CRTEffects } from './effects/CRTEffects';
 import { useAudio } from '../hooks/useAudio';
+import { useTheme } from '../hooks/useTheme';
 
 interface LoginScreenProps {
   onLogin: (username: string, password: string) => void;
@@ -13,6 +14,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [attempts, setAttempts] = useState(0);
   const [glitchText, setGlitchText] = useState('');
   const { playSound } = useAudio();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,21 +38,91 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     }
   };
 
+  // Calculate hue rotation based on theme primary color
+  const getHueRotation = () => {
+    // Extract hue from HSL or convert RGB to HSL
+    const primaryColor = theme.primary;
+    
+    // If it's already an HSL color, extract the hue
+    if (primaryColor.startsWith('hsl')) {
+      const hueMatch = primaryColor.match(/hsl\((\d+)/);
+      return hueMatch ? parseInt(hueMatch[1]) : 120;
+    }
+    
+    // For hex colors, convert to HSL
+    const hex = primaryColor.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16) / 255;
+    const g = parseInt(hex.substr(2, 2), 16) / 255;
+    const b = parseInt(hex.substr(4, 2), 16) / 255;
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0;
+    
+    if (max !== min) {
+      const d = max - min;
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+    
+    return Math.round(h * 360);
+  };
+
+  const hueRotation = getHueRotation();
+
   const handleKeyPress = () => {
     playSound('key');
   };
 
   return (
-    <div className="login-screen">
+    <div 
+      className="login-screen"
+      style={{
+        backgroundImage: `url('/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        filter: `hue-rotate(${hueRotation}deg) brightness(0.3) contrast(1.2)`,
+        position: 'relative'
+      }}
+    >
+      {/* Dark overlay for better text readability */}
+      <div 
+        className="login-overlay"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: `linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.8) 0%,
+            rgba(var(--primary-rgb), 0.1) 50%,
+            rgba(0, 0, 0, 0.8) 100%
+          )`,
+          zIndex: 1
+        }}
+      />
+      
       <CRTEffects />
       
-      <div className="login-container">
+      <div className="login-container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="login-header">
-          <img 
-            src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
-            alt="Copland OS Enterprise" 
-            className="login-logo"
-          />
+          <div className="logo-container">
+            <img 
+              src="/ChatGPT Image Jul 10, 2025, 10_18_57 AM.png" 
+              alt="Copland OS Enterprise" 
+              className="login-logo"
+              style={{
+                filter: `hue-rotate(${hueRotation}deg) drop-shadow(0 0 20px ${theme.primary})`
+              }}
+            />
+          </div>
           <div className="system-logo">
 {`
 ███╗   ██╗ █████╗ ██╗   ██╗██╗

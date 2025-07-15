@@ -11,9 +11,15 @@ interface Theme {
   accentRgb: string;
 }
 
+interface ThemeChangeListener {
+  (theme: Theme): void;
+}
+
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  addThemeChangeListener: (listener: ThemeChangeListener) => void;
+  removeThemeChangeListener: (listener: ThemeChangeListener) => void;
 }
 
 const defaultTheme: Theme = {
@@ -29,7 +35,9 @@ const defaultTheme: Theme = {
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: defaultTheme,
-  setTheme: () => {}
+  setTheme: () => {},
+  addThemeChangeListener: () => {},
+  removeThemeChangeListener: () => {}
 });
 
 export const useTheme = () => {
@@ -37,6 +45,7 @@ export const useTheme = () => {
     const saved = localStorage.getItem('navi-theme');
     return saved ? JSON.parse(saved) : defaultTheme;
   });
+  const [listeners, setListeners] = useState<ThemeChangeListener[]>([]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -52,6 +61,17 @@ export const useTheme = () => {
     root.style.setProperty('--primary-rgb', newTheme.primaryRgb);
     root.style.setProperty('--secondary-rgb', newTheme.secondaryRgb);
     root.style.setProperty('--accent-rgb', newTheme.accentRgb);
+    
+    // Notify all listeners
+    listeners.forEach(listener => listener(newTheme));
+  };
+
+  const addThemeChangeListener = (listener: ThemeChangeListener) => {
+    setListeners(prev => [...prev, listener]);
+  };
+
+  const removeThemeChangeListener = (listener: ThemeChangeListener) => {
+    setListeners(prev => prev.filter(l => l !== listener));
   };
 
   useEffect(() => {
@@ -70,5 +90,5 @@ export const useTheme = () => {
     document.body.style.color = theme.primary;
   }, [theme]);
 
-  return { theme, setTheme };
+  return { theme, setTheme, addThemeChangeListener, removeThemeChangeListener };
 };

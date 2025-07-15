@@ -152,22 +152,15 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: 
-    linear-gradient(
-      45deg,
-      var(--background-color) 25%,
-      rgba(var(--primary-rgb), 0.1) 25%,
-      rgba(var(--primary-rgb), 0.1) 50%,
-      var(--background-color) 50%,
-      var(--background-color) 75%,
-      rgba(var(--primary-rgb), 0.1) 75%
-    );
-  background-size: 40px 40px;
-  animation: diagonal-scroll 4s linear infinite;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
+  transition: filter 0.5s ease-in-out;
+}
+
+.login-overlay {
+  animation: overlay-pulse 4s ease-in-out infinite;
 }
 
 .login-container {
@@ -176,8 +169,12 @@ body {
   padding: 2rem;
   border: 1px solid var(--primary-color);
   border-radius: 8px;
-  background: rgba(var(--primary-rgb), 0.05);
-  box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 0 30px rgba(var(--primary-rgb), 0.3),
+    inset 0 0 20px rgba(var(--primary-rgb), 0.1);
+  transition: all 0.3s ease-in-out;
 }
 
 .login-header {
@@ -185,11 +182,16 @@ body {
   margin-bottom: 2rem;
 }
 
+.logo-container {
+  display: flex;
+  justify-content: center;
+}
+
 .login-logo {
   width: 120px;
   height: 120px;
   margin-bottom: 1rem;
-  filter: drop-shadow(0 0 20px var(--secondary-color));
+  transition: filter 0.5s ease-in-out;
 }
 
 .system-logo {
@@ -2041,6 +2043,15 @@ body {
   }
   50% { 
     filter: hue-rotate(10deg) brightness(1.1);
+  }
+}
+
+@keyframes overlay-pulse {
+  0%, 100% { 
+    opacity: 1;
+  }
+  50% { 
+    opacity: 0.8;
   }
 }
 
