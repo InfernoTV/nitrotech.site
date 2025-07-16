@@ -113,9 +113,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       
       <div className="login-container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="login-header" style={{ 
-          background: 'rgba(0, 0, 0, 0.7)',
-          borderRadius: '8px',
-          padding: '1rem',
           marginBottom: '1rem'
         }}>
           <div className="logo-container">
