@@ -74,6 +74,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
   const hueRotation = getHueRotation();
 
+  // Convert theme color to filter values for better logo color matching
+  const getLogoFilter = () => {
+    // This creates a filter that makes the logo match the theme color more precisely
+    return `brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(${hueRotation}deg) brightness(1) contrast(1) drop-shadow(0 0 20px ${theme.primary})`;
+  };
+
   const handleKeyPress = () => {
     playSound('key');
   };
@@ -119,7 +125,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               alt="Copland OS Enterprise" 
               className="login-logo"
               style={{
-                filter: `hue-rotate(${hueRotation}deg) drop-shadow(0 0 20px ${theme.primary})`
+                filter: getLogoFilter()
               }}
             />
           </div>
