@@ -247,7 +247,13 @@ function App() {
       {isSpecialLogin && <ParticleSystem />}
       
       <div className="os-interface">
-        <div className="desktop">
+        <div className="desktop" style={{
+          backgroundImage: `url('/new logo.png')`,
+          backgroundSize: '200px 200px',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundBlendMode: 'overlay'
+        }}>
           {windows.map(window => (
             <WindowManager
               key={window.id}

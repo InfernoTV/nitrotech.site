@@ -305,6 +305,26 @@ body {
   box-shadow: 0 0 20px var(--primary-color);
 }
 
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .login-error {
   background: rgba(var(--accent-rgb), 0.1);
   border: 1px solid var(--accent-color);
@@ -688,15 +708,16 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 0 0 0;
   backdrop-filter: blur(10px);
-  z-index: 1000;
+  position: relative;
 }
 
 .taskbar-left {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .start-button {
@@ -2266,4 +2287,164 @@ input:focus,
   margin: 0;
   padding: 0.5rem;
   border-top: 1px solid rgba(var(--primary-rgb), 0.2);
+}
+/* Trail Settings */
+.trail-settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.trail-settings {
+  background: rgba(var(--primary-rgb), 0.05);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(var(--primary-rgb), 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.settings-header h3 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 1.1rem;
+  text-shadow: 0 0 5px var(--primary-color);
+}
+
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-section {
+  padding: 1rem;
+  background: rgba(var(--primary-rgb), 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toggle-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-color);
+}
+
+.trail-select {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  border-radius: 4px;
+  color: var(--primary-color);
+  font-family: inherit;
+  margin-top: 0.5rem;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setting-item label {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.trail-slider {
+  width: 100%;
+  height: 6px;
+  background: rgba(var(--primary-rgb), 0.2);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.trail-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+.color-input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.presets-section {
+  margin-top: 1rem;
+}
+
+.presets-section h4 {
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.preset-btn {
+  background: transparent;
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+  color: var(--primary-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.preset-btn:hover {
+  background: rgba(var(--primary-rgb), 0.1);
+  border-color: var(--primary-color);
 }
