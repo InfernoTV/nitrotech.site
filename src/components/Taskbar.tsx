@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Palette, Home, Wifi, Volume2, Settings } from 'lucide-react';
+import { Palette, Home, Wifi, Volume2, Settings, MousePointer } from 'lucide-react';
 import { ColorPicker } from './ColorPicker';
+import { TrailSettings } from './TrailSettings';
 import { useAudio } from '../hooks/useAudio';
 
 interface TaskbarProps {
@@ -21,6 +22,7 @@ export const Taskbar: React.FC<TaskbarProps> = ({
 }) => {
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showTrailSettings, setShowTrailSettings] = useState(false);
   const { playSound } = useAudio();
 
   const handleStartClick = () => {
@@ -40,9 +42,21 @@ export const Taskbar: React.FC<TaskbarProps> = ({
     playSound('select');
   };
 
+  const handleTrailClick = () => {
+    setShowTrailSettings(true);
+    setShowStartMenu(false);
+    playSound('select');
+  };
+
+  // Calculate z-index to be above all windows
+  const getTaskbarZIndex = () => {
+    const maxWindowZ = Math.max(...windows.map(w => w.zIndex), 0);
+    return maxWindowZ + 1000;
+  };
+
   return (
     <>
-      <div className="taskbar">
+      <div className="taskbar" style={{ zIndex: getTaskbarZIndex() }}>
         <div className="taskbar-left">
           <button className="start-button" onClick={handleStartClick}>
             <img 
@@ -90,6 +104,9 @@ export const Taskbar: React.FC<TaskbarProps> = ({
                 <button onClick={handleThemeClick}>
                   <Palette size={16} /> Theme Settings
                 </button>
+                <button onClick={handleTrailClick}>
+                  <MousePointer size={16} /> Trail Effects
+                </button>
               </div>
             </div>
           )}
@@ -121,6 +138,10 @@ export const Taskbar: React.FC<TaskbarProps> = ({
 
       {showColorPicker && (
         <ColorPicker onClose={() => setShowColorPicker(false)} />
+      )}
+      
+      {showTrailSettings && (
+        <TrailSettings onClose={() => setShowTrailSettings(false)} />
       )}
     </>
   );

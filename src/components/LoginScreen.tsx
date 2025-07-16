@@ -12,6 +12,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [attempts, setAttempts] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [glitchText, setGlitchText] = useState('');
   const { playSound } = useAudio();
   const { theme } = useTheme();
@@ -30,6 +31,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim() && password.trim()) {
+      setIsLoading(true);
       playSound('select');
       onLogin(username, password);
     } else {
@@ -86,7 +88,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        filter: `hue-rotate(${hueRotation}deg) brightness(0.8) contrast(1.1)`,
         position: 'relative'
       }}
     >
@@ -101,10 +102,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           height: '100%',
           background: `linear-gradient(
             135deg,
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(var(--primary-rgb), 0.3) 50%,
-            rgba(0, 0, 0, 0.3) 100%
-          )`,
           zIndex: 1
         }}
       />
@@ -112,16 +109,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       <CRTEffects />
       
       <div className="login-container" style={{ position: 'relative', zIndex: 2 }}>
-        <div className="login-header" style={{ 
-          marginBottom: '1rem'
-        }}>
           <div className="logo-container">
             <img 
               src="/new logo.png" 
               alt="Copland OS Enterprise" 
               className="login-logo"
               style={{
-                filter: `hue-rotate(${hueRotation}deg) drop-shadow(0 0 20px ${theme.primary})`
               }}
             />
           </div>
@@ -136,7 +129,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 `}
           </div>
           <h1>COPLAND OPERATING SYSTEM</h1>
-          <p className="version">Produced By Inferno*</p>
+          <p className="version">
+            <a 
+              href="https://guns.lol/infernoytv" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="producer-link"
+            >
+              Produced By Inferno
+            </a>
+          </p>
           <div className="glitch-line">SYSTEM_STATUS: J946@5488AA97464</div>
         </div>
 
@@ -178,7 +180,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           </div>
 
           <button type="submit" className="login-btn">
-            INITIALIZE CONNECTION
+            {isLoading ? (
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+                <span>CONNECTING...</span>
+              </div>
+            ) : (
+              'INITIALIZE CONNECTION'
+            )}
           </button>
 
           {attempts > 0 && (
