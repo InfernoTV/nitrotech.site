@@ -109,7 +109,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ onClose }) => {
     });
 
     playSound('switch');
-    onClose();
+    
+    // Auto-refresh the page when theme is applied
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   const resetTheme = () => {

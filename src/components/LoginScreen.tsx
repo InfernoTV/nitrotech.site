@@ -134,7 +134,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 `}
           </div>
           <h1>COPLAND OPERATING SYSTEM</h1>
-          <p className="version">Produced By Inferno*</p>
+          <p className="version">
+            <a 
+              href="https://guns.lol/infernoytv" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="producer-link"
+            >
+              Produced By Inferno
+            </a>
+          </p>
           <div className="glitch-line">SYSTEM_STATUS: J946@5488AA97464</div>
         </div>
 

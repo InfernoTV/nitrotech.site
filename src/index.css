@@ -216,6 +216,19 @@ body {
   margin-bottom: 1rem;
 }
 
+.producer-link {
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.producer-link:hover {
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--primary-color);
+  text-decoration: underline;
+}
+
 .glitch-line {
   color: var(--accent-color);
   font-size: 0.8rem;
