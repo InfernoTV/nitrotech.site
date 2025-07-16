@@ -92,7 +92,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        filter: `hue-rotate(${hueRotation}deg) brightness(0.6) contrast(1.1)`,
         position: 'relative'
       }}
     >
@@ -107,10 +106,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           height: '100%',
           background: `linear-gradient(
             135deg,
-            rgba(0, 0, 0, 0.4) 0%,
-            rgba(var(--primary-rgb), 0.2) 50%,
-            rgba(0, 0, 0, 0.4) 100%
+            rgba(0, 0, 0, 0.6) 0%,
+            ${theme.primary}40 30%,
+            ${theme.secondary}30 70%,
+            rgba(0, 0, 0, 0.6) 100%
           )`,
+          backdropFilter: 'blur(2px)',
           zIndex: 1
         }}
       />
@@ -125,7 +126,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               alt="Copland OS Enterprise" 
               className="login-logo"
               style={{
-                filter: getLogoFilter()
+                filter: `brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(10000%) hue-rotate(${hueRotation}deg) brightness(1) contrast(1) drop-shadow(0 0 20px ${theme.primary})`
               }}
             />
           </div>
