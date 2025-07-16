@@ -40,6 +40,42 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     }
   };
 
+  // Calculate hue rotation based on theme primary color
+  const getHueRotation = () => {
+    // Extract hue from HSL or convert RGB to HSL
+    const primaryColor = theme.primary;
+    
+    // If it's already an HSL color, extract the hue
+    if (primaryColor.startsWith('hsl')) {
+      const hueMatch = primaryColor.match(/hsl\((\d+)/);
+      return hueMatch ? parseInt(hueMatch[1]) : 120;
+    }
+    
+    // For hex colors, convert to HSL
+    const hex = primaryColor.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16) / 255;
+    const g = parseInt(hex.substr(2, 2), 16) / 255;
+    const b = parseInt(hex.substr(4, 2), 16) / 255;
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0;
+    
+    if (max !== min) {
+      const d = max - min;
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+    
+    return Math.round(h * 360);
+  };
+
+  const hueRotation = getHueRotation();
+
   const handleKeyPress = () => {
     playSound('key');
   };
@@ -66,12 +102,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           height: '100%',
           background: `linear-gradient(
             135deg,
-            rgba(0, 0, 0, 0.2) 0%,
-            ${theme.primary}60 30%,
-            ${theme.secondary}50 70%,
-            rgba(0, 0, 0, 0.2) 100%
-          )`,
-          backdropFilter: 'blur(1px)',
           zIndex: 1
         }}
       />
@@ -79,17 +109,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       <CRTEffects />
       
       <div className="login-container" style={{ position: 'relative', zIndex: 2 }}>
-        <div className="login-header">
           <div className="logo-container">
             <img 
               src="/new logo.png" 
               alt="Copland OS Enterprise" 
               className="login-logo"
               style={{
-                filter: `brightness(0) invert(1)`,
-                color: theme.primary,
-                WebkitFilter: `brightness(0) invert(1)`,
-                mixBlendMode: 'multiply'
               }}
             />
           </div>
