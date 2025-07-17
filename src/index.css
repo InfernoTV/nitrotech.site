@@ -527,13 +527,16 @@ body {
   height: 100vh;
   pointer-events: none;
   z-index: 50;
+  will-change: transform;
 }
 
 .particle {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  transition: opacity 0.1s, transform 0.1s;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 /* Main Interface */
 .lain-os {
@@ -2176,8 +2179,17 @@ input:focus,
 /* Help Table Styles */
 /* Loading Spinner Animation */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { 
+    transform: rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(180deg);
+  }
+  100% { 
+    transform: rotate(360deg);
+    filter: hue-rotate(360deg);
+  }
 }
 
 /* Trail System Styles */

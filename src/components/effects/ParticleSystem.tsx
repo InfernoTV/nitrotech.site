@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTheme } from '../../hooks/useTheme';
 
 interface Particle {
   id: number;
@@ -15,10 +16,11 @@ interface Particle {
 export const ParticleSystem: React.FC = () => {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [isActive, setIsActive] = useState(true);
+  const { theme } = useTheme();
 
   useEffect(() => {
     let particleId = 0;
-    const colors = ['#00ff41', '#00d4ff', '#ff0040', '#ffaa00', '#ff41ff'];
+    const colors = [theme.primary, theme.secondary, theme.accent, '#ffaa00', '#ff41ff'];
 
     // Stop particles after 10 seconds
     const stopTimer = setTimeout(() => {
@@ -37,7 +39,9 @@ export const ParticleSystem: React.FC = () => {
       color: colors[Math.floor(Math.random() * colors.length)]
     });
 
-    const updateParticles = () => {
+    let animationId: number;
+    
+    const updateParticles = (timestamp: number) => {
       setParticles(prev => {
         if (!isActive && prev.length === 0) return [];
         
@@ -62,15 +66,17 @@ export const ParticleSystem: React.FC = () => {
 
         return updated;
       });
+      
+      animationId = requestAnimationFrame(updateParticles);
     };
 
-    const interval = setInterval(updateParticles, 16); // ~60fps
+    animationId = requestAnimationFrame(updateParticles);
 
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(animationId);
       clearTimeout(stopTimer);
     };
-  }, []);
+  }, [isActive, theme.primary, theme.secondary, theme.accent]);
 
   useEffect(() => {
     if (!isActive) {
@@ -103,6 +109,7 @@ export const ParticleSystem: React.FC = () => {
             opacity: 1 - (particle.life / particle.maxLife),
             boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
             transform: `scale(${1 - (particle.life / particle.maxLife) * 0.5})`
+            willChange: 'transform, opacity',
           }}
         />
       ))}

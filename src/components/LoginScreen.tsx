@@ -180,15 +180,23 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
           <button type="submit" className="login-btn" disabled={isConnecting}>
             {isConnecting ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '10px',
+                position: 'relative'
+              }}>
                 <div 
                   style={{
                     width: '20px',
                     height: '20px',
-                    border: `2px solid ${theme.primary}40`,
-                    borderTop: `2px solid ${theme.primary}`,
+                    border: `3px solid transparent`,
+                    borderTop: `3px solid ${theme.primary}`,
+                    borderRight: `3px solid ${theme.primary}`,
                     borderRadius: '50%',
-                    animation: 'spin 1s linear infinite'
+                    animation: 'spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite',
+                    boxShadow: `0 0 10px ${theme.primary}40`
                   }}
                 />
                 CONNECTING...

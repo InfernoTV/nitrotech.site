@@ -245,6 +245,7 @@ function App() {
       <CRTEffects />
       <GlitchOverlay intensity={glitchIntensity} />
       <MouseTrail />
+      <AdvancedTrail />
       {isSpecialLogin && <ParticleSystem />}
       
       <div className="os-interface">
@@ -303,8 +304,6 @@ function App() {
           onWindowAction={minimizeWindow}
         />
       </div>
-      
-      <AdvancedTrail />
     </div>
   );
 }
