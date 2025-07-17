@@ -108,7 +108,7 @@ export const ParticleSystem: React.FC = () => {
             backgroundColor: particle.color,
             opacity: 1 - (particle.life / particle.maxLife),
             boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
-            transform: `scale(${1 - (particle.life / particle.maxLife) * 0.5})`
+            transform: `scale(${1 - (particle.life / particle.maxLife) * 0.5})`,
             willChange: 'transform, opacity',
           }}
         />
