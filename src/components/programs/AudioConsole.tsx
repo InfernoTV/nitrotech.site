@@ -32,7 +32,7 @@ export const AudioConsole: React.FC<AudioConsoleProps> = ({ onSwitchProgram }) =
       title: "DUVET", 
       artist: "bôa", 
       duration: "3:24",
-      audioUrl: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Placeholder - replace with actual URLs
+      audioUrl: "https://d33kc2wwsvguti.cloudfront.net/k1cvrj%2Ffile%2Fe97449f98c997cdd6b04c18d04f2973f_c54550f1beb32ed448ee9c1a67d92a88.mp3?response-content-disposition=inline%3Bfilename%3D%22e97449f98c997cdd6b04c18d04f2973f_c54550f1beb32ed448ee9c1a67d92a88.mp3%22%3B&response-content-type=audio%2Fmpeg&Expires=1752783857&Signature=UaJ6EGfslHcjqtw3cqvTGI58kg3qXUXmtMTadvQ~Uaw3NM4p5ilCQ6B~ztsZcarw9W428kzL6edgYGEpkOsIqxW0zmirwhnxmB1l0E~bdHOK7gQVziuq-pxpqzHV1eirEV~Er0EIAnn0aObuMceQtoz1TKwWAD4WNiSRv1eHrqyuZwbpwOMrS5p276FGar3N-58GZN7CRN6DxlXjxQn2siWDX2sR72ur8h7fOhRIMVlPpk1DJ9WLyb8Ia8dNJIBUuBIFIB3tSkyejPs1P~zgzf4jFiU8c~txuw-XgHddeV0BI0oymBP9eewWxOtUFtf1q0A5D7O2MscyDY7qJFgtAQ__&Key-Pair-Id=APKAJT5WQLLEOADKLHBQ"
     },
     { 
       title: "Present Day", 
@@ -157,6 +157,19 @@ export const AudioConsole: React.FC<AudioConsoleProps> = ({ onSwitchProgram }) =
     playVolumeSound(newVolume);
   };
 
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!currentAudio) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    const newTime = percentage * duration;
+    
+    currentAudio.currentTime = newTime;
+    setCurrentTime(newTime);
+    playSound('key');
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -201,6 +214,22 @@ export const AudioConsole: React.FC<AudioConsoleProps> = ({ onSwitchProgram }) =
               />
               <span>{volume}%</span>
             </div>
+            
+            {selectedTrackData && selectedTrackData.playing && (
+              <div className="track-progress">
+                <span className="time-display">{formatTime(currentTime)}</span>
+                <div 
+                  className="progress-track"
+                  onClick={handleSeek}
+                >
+                  <div 
+                    className="progress-fill"
+                    style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
+                  />
+                </div>
+                <span className="time-display">{formatTime(duration)}</span>
+              </div>
+            )}
           </div>
         </div>
 

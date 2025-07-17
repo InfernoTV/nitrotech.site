@@ -717,11 +717,11 @@ body {
   bottom: 40px;
   left: 1rem;
   width: 300px;
-  background: rgba(var(--background-color), 0.95);
+  background: rgba(0, 0, 0, 0.85);
   border: 1px solid var(--primary-color);
   border-radius: 8px;
   box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px) saturate(180%);
   z-index: 10000;
 }
 
@@ -1806,6 +1806,44 @@ body {
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 0 5px var(--primary-color);
+}
+
+.track-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(var(--primary-rgb), 0.3);
+}
+
+.time-display {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-family: monospace;
+  min-width: 40px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(var(--primary-rgb), 0.2);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-track:hover {
+  background: rgba(var(--primary-rgb), 0.3);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3px;
+  transition: width 0.1s ease;
+  box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.5);
 }
 
 .track-list {
