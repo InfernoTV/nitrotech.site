@@ -64,6 +64,11 @@ export const useTheme = () => {
     
     // Notify all listeners
     listeners.forEach(listener => listener(newTheme));
+    
+    // Auto-refresh page after theme change
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   const addThemeChangeListener = (listener: ThemeChangeListener) => {

@@ -12,6 +12,7 @@ import { CRTEffects } from './components/effects/CRTEffects';
 import { MouseTrail } from './components/effects/MouseTrail';
 import { GlitchOverlay } from './components/effects/GlitchOverlay';
 import { ParticleSystem } from './components/effects/ParticleSystem';
+import { AdvancedTrail } from './components/effects/AdvancedTrail';
 import { useAudio } from './hooks/useAudio';
 import { useCursor } from './hooks/useCursor';
 import { useTheme } from './hooks/useTheme';
@@ -248,13 +249,24 @@ function App() {
       
       <div className="os-interface">
         <div className="desktop">
-        <div className="desktop" style={{
-          backgroundImage: `url('/new logo.png')`,
-          backgroundSize: '200px 200px',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundBlendMode: 'overlay'
-        }}>
+          <div 
+            className="desktop-background"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundImage: `url('/new logo.png')`,
+              backgroundSize: '200px 200px',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              opacity: 0.1,
+              mixBlendMode: 'overlay',
+              pointerEvents: 'none',
+              zIndex: 0
+            }}
+          />
           {windows.map(window => (
             <WindowManager
               key={window.id}
@@ -291,6 +303,8 @@ function App() {
           onWindowAction={minimizeWindow}
         />
       </div>
+      
+      <AdvancedTrail />
     </div>
   );
 }

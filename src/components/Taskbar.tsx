@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Palette, Home, Wifi, Volume2, Settings } from 'lucide-react';
+import { Palette, Home, Wifi, Volume2, Settings, Sparkles } from 'lucide-react';
 import { ColorPicker } from './ColorPicker';
+import { TrailSettings } from './TrailSettings';
 import { useAudio } from '../hooks/useAudio';
 
 interface TaskbarProps {
@@ -10,6 +11,7 @@ interface TaskbarProps {
     program: string;
     title: string;
     isMinimized: boolean;
+    zIndex: number;
   }>;
   onWindowAction: (windowId: string) => void;
 }
@@ -21,8 +23,17 @@ export const Taskbar: React.FC<TaskbarProps> = ({
 }) => {
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showTrailSettings, setShowTrailSettings] = useState(false);
   const { playSound } = useAudio();
 
+  // Calculate the maximum z-index from all windows
+  const maxWindowZIndex = windows.reduce((max, window) => Math.max(max, window.zIndex), 0);
+  const taskbarZIndex = maxWindowZIndex + 1000;
+
+  // Apply dynamic z-index to taskbar
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--taskbar-z-index', taskbarZIndex.toString());
+  }, [taskbarZIndex]);
   const handleStartClick = () => {
     setShowStartMenu(!showStartMenu);
     playSound('select');
@@ -40,6 +51,11 @@ export const Taskbar: React.FC<TaskbarProps> = ({
     playSound('select');
   };
 
+  const handleTrailClick = () => {
+    setShowTrailSettings(true);
+    setShowStartMenu(false);
+    playSound('select');
+  };
   return (
     <>
       <div className="taskbar">
@@ -90,6 +106,9 @@ export const Taskbar: React.FC<TaskbarProps> = ({
                 <button onClick={handleThemeClick}>
                   <Palette size={16} /> Theme Settings
                 </button>
+                <button onClick={handleTrailClick}>
+                  <Sparkles size={16} /> Trail Effects
+                </button>
               </div>
             </div>
           )}
@@ -121,6 +140,10 @@ export const Taskbar: React.FC<TaskbarProps> = ({
 
       {showColorPicker && (
         <ColorPicker onClose={() => setShowColorPicker(false)} />
+      )}
+      
+      {showTrailSettings && (
+        <TrailSettings onClose={() => setShowTrailSettings(false)} />
       )}
     </>
   );

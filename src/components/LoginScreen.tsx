@@ -13,6 +13,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [glitchText, setGlitchText] = useState('');
+  const [isConnecting, setIsConnecting] = useState(false);
   const { playSound } = useAudio();
   const { theme } = useTheme();
 
@@ -30,54 +31,26 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim() && password.trim()) {
+      setIsConnecting(true);
       playSound('select');
-      onLogin(username, password);
+      // Add a small delay to show the loading animation
+      setTimeout(() => {
+        onLogin(username, password);
+      }, 1500);
     } else {
       playSound('error');
       setAttempts(prev => prev + 1);
     }
   };
 
-  // Calculate hue rotation based on theme primary color
-  const getHueRotation = () => {
-    // Extract hue from HSL or convert RGB to HSL
-    const primaryColor = theme.primary;
-    
-    // If it's already an HSL color, extract the hue
-    if (primaryColor.startsWith('hsl')) {
-      const hueMatch = primaryColor.match(/hsl\((\d+)/);
-      return hueMatch ? parseInt(hueMatch[1]) : 120;
-    }
-    
-    // For hex colors, convert to HSL
-    const hex = primaryColor.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16) / 255;
-    const g = parseInt(hex.substr(2, 2), 16) / 255;
-    const b = parseInt(hex.substr(4, 2), 16) / 255;
-    
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h = 0;
-    
-    if (max !== min) {
-      const d = max - min;
-      switch (max) {
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
-      }
-      h /= 6;
-    }
-    
-    return Math.round(h * 360);
-  };
-
-  const hueRotation = getHueRotation();
 
   const handleKeyPress = () => {
     playSound('key');
   };
 
+  const handleProducerClick = () => {
+    window.open('https://guns.lol/infernoytv', '_blank', 'noopener,noreferrer');
+  };
   return (
     <div 
       className="login-screen"
@@ -86,7 +59,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        filter: `hue-rotate(${hueRotation}deg) brightness(0.8) contrast(1.1)`,
         position: 'relative'
       }}
     >
@@ -101,10 +73,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           height: '100%',
           background: `linear-gradient(
             135deg,
-            rgba(0, 0, 0, 0.3) 0%,
-            rgba(var(--primary-rgb), 0.3) 50%,
-            rgba(0, 0, 0, 0.3) 100%
+            rgba(0, 0, 0, 0.2) 0%,
+            ${theme.primary}60 30%,
+            ${theme.secondary}50 70%,
+            rgba(0, 0, 0, 0.2) 100%
           )`,
+          backdropFilter: 'blur(2px)',
           zIndex: 1
         }}
       />
@@ -121,7 +95,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               alt="Copland OS Enterprise" 
               className="login-logo"
               style={{
-                filter: `hue-rotate(${hueRotation}deg) drop-shadow(0 0 20px ${theme.primary})`
+                width: '80px',
+                height: '80px',
+                filter: `brightness(0) invert(1) drop-shadow(0 0 20px ${theme.primary})`,
+                mixBlendMode: 'multiply'
               }}
             />
           </div>
@@ -136,7 +113,28 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 `}
           </div>
           <h1>COPLAND OPERATING SYSTEM</h1>
-          <p className="version">Produced By Inferno*</p>
+          <p 
+            className="version producer-link" 
+            onClick={handleProducerClick}
+            style={{
+              cursor: 'pointer',
+              color: theme.secondary,
+              transition: 'all 0.3s ease',
+              textDecoration: 'none'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = theme.primary;
+              e.currentTarget.style.textShadow = `0 0 10px ${theme.primary}`;
+              e.currentTarget.style.textDecoration = 'underline';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = theme.secondary;
+              e.currentTarget.style.textShadow = 'none';
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            Produced By Inferno
+          </p>
           <div className="glitch-line">SYSTEM_STATUS: J946@5488AA97464</div>
         </div>
 
@@ -152,6 +150,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               placeholder="Enter username..."
               autoFocus
               autoComplete="off"
+              disabled={isConnecting}
             />
           </div>
 
@@ -166,19 +165,37 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 onKeyPress={handleKeyPress}
                 placeholder="Enter password..."
                 autoComplete="off"
+                disabled={isConnecting}
               />
               <button
                 type="button"
                 className="show-password"
                 onClick={() => setShowPassword(!showPassword)}
+                disabled={isConnecting}
               >
                 {showPassword ? '👁️' : '👁️‍🗨️'}
               </button>
             </div>
           </div>
 
-          <button type="submit" className="login-btn">
-            INITIALIZE CONNECTION
+          <button type="submit" className="login-btn" disabled={isConnecting}>
+            {isConnecting ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+                <div 
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                    border: `2px solid ${theme.primary}40`,
+                    borderTop: `2px solid ${theme.primary}`,
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }}
+                />
+                CONNECTING...
+              </div>
+            ) : (
+              'INITIALIZE CONNECTION'
+            )}
           </button>
 
           {attempts > 0 && (
