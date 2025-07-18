@@ -111,6 +111,28 @@ export const AudioConsole: React.FC<AudioConsoleProps> = ({ onSwitchProgram }) =
     }
   }, [currentAudio]);
   const handleTrackClick = (trackId: number) => {
+  // Handle seek functionality
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!currentAudio || duration === 0) return;
+    
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    const newTime = percentage * duration;
+    
+    currentAudio.currentTime = newTime;
+    setCurrentTime(newTime);
+    playSound('key');
+  };
+
+  // Format time helper
+  const formatTime = (seconds: number) => {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
     playSound('select');
     
     const track = tracks.find(t => t.id === trackId);
@@ -215,12 +237,13 @@ export const AudioConsole: React.FC<AudioConsoleProps> = ({ onSwitchProgram }) =
               <span>{volume}%</span>
             </div>
             
-            {selectedTrackData && selectedTrackData.playing && (
+            {currentAudio && (
               <div className="track-progress">
                 <span className="time-display">{formatTime(currentTime)}</span>
                 <div 
                   className="progress-track"
                   onClick={handleSeek}
+                  style={{ cursor: 'pointer' }}
                 >
                   <div 
                     className="progress-fill"
@@ -294,7 +317,7 @@ export const AudioConsole: React.FC<AudioConsoleProps> = ({ onSwitchProgram }) =
                     {selectedTrackData.playing ? 'PLAYING' : 'STOPPED'}
                   </span>
                 </div>
-                {selectedTrackData.playing && (
+                {currentAudio && (
                   <div className="meta-row">
                     <span>TIME:</span>
                     <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
