@@ -14,6 +14,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [attempts, setAttempts] = useState(0);
   const [glitchText, setGlitchText] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
   const { playSound } = useAudio();
   const { theme } = useTheme();
 
@@ -51,6 +52,17 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const handleProducerClick = () => {
     window.open('https://guns.lol/infernoytv', '_blank', 'noopener,noreferrer');
   };
+
+  const handleBannerClick = () => {
+    window.open('https://copland-os.store', '_blank', 'noopener,noreferrer');
+  };
+
+  const handleCloseBanner = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowBanner(false);
+    playSound('key');
+  };
+
   return (
     <div 
       className="login-screen"
@@ -62,6 +74,77 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         position: 'relative'
       }}
     >
+      {showBanner && (
+        <div 
+          className="version-banner"
+          onClick={handleBannerClick}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1000,
+            background: `linear-gradient(135deg, ${theme.primary}20, ${theme.secondary}20)`,
+            borderBottom: `1px solid ${theme.primary}`,
+            padding: '0.75rem 1rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            backdropFilter: 'blur(10px)',
+            boxShadow: `0 2px 10px ${theme.primary}40`
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = `linear-gradient(135deg, ${theme.primary}30, ${theme.secondary}30)`;
+            e.currentTarget.style.boxShadow = `0 4px 15px ${theme.primary}60`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = `linear-gradient(135deg, ${theme.primary}20, ${theme.secondary}20)`;
+            e.currentTarget.style.boxShadow = `0 2px 10px ${theme.primary}40`;
+          }}
+        >
+          <span style={{
+            color: theme.primary,
+            fontSize: '0.9rem',
+            textShadow: `0 0 10px ${theme.primary}`,
+            fontWeight: 600,
+            textDecoration: 'underline',
+            textDecorationColor: theme.secondary
+          }}>
+            ⚠️ This is the old version. Try out the new updated version at{' '}
+            <strong style={{ color: theme.secondary }}>copland-os.store</strong>
+          </span>
+          <button
+            onClick={handleCloseBanner}
+            style={{
+              position: 'absolute',
+              right: '1rem',
+              background: 'transparent',
+              border: `1px solid ${theme.primary}`,
+              color: theme.primary,
+              borderRadius: '4px',
+              padding: '0.25rem 0.5rem',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              transition: 'all 0.2s ease',
+              textShadow: `0 0 5px ${theme.primary}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.primary;
+              e.currentTarget.style.color = '#000';
+              e.currentTarget.style.boxShadow = `0 0 10px ${theme.primary}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = theme.primary;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
       {/* Dark overlay for better text readability */}
       <div 
         className="login-overlay"
@@ -85,7 +168,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
       
       <CRTEffects />
       
-      <div className="login-container" style={{ position: 'relative', zIndex: 2 }}>
+      <div 
+        className="login-container" 
+        style={{ 
+          position: 'relative', 
+          zIndex: 2,
+          marginTop: showBanner ? '3.5rem' : '0',
+          transition: 'margin-top 0.3s ease'
+        }}
+      >
         <div className="login-header" style={{ 
           marginBottom: '1rem'
         }}>
